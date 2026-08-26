@@ -13,7 +13,11 @@
 }
 
 .crosspost-composer .crosspost-composer__button-label {
-	margin: 16px 0 8px;
+	margin: 12px 0 8px;
+}
+
+.crosspost-composer .components-notice + .crosspost-composer__button-label {
+	margin-top: 0;
 }
 
 .crosspost-composer__buttons {
@@ -23,7 +27,7 @@
 }
 
 .crosspost-composer .components-notice {
-	margin: 12px 0 0;
+	margin: 12px 0 16px !important;
 	padding: 8px 12px;
 }
 

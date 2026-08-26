@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Crosspost Composer
  * Description: Adds a shared, no-API composer for X, Bluesky, Threads, and Mastodon to the block editor.
- * Version: 0.1.6
+ * Version: 0.1.7
  * Author: Stefan Pauwels
  * License: GPL-2.0-or-later
  * Text Domain: crosspost-composer
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.1.6';
+const CROSSPOST_COMPOSER_VERSION                    = '0.1.7';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 
