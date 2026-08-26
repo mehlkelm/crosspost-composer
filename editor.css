@@ -1,0 +1,29 @@
+.crosspost-composer__count {
+	display: block;
+	text-align: right;
+}
+
+.crosspost-composer__count.is-over-limit {
+	color: #b32d2e;
+	font-weight: 600;
+}
+
+.crosspost-composer__reset {
+	margin: -8px 0 12px;
+}
+
+.crosspost-composer__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.crosspost-composer .components-notice {
+	margin: 12px 0 0;
+	padding: 8px 12px;
+}
+
+.crosspost-composer .components-notice__content {
+	margin: 0;
+}
