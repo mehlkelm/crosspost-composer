@@ -115,7 +115,8 @@
 			return {
 				content: editor.getEditedPostContent() || '',
 				title: editor.getEditedPostAttribute( 'title' ) || '',
-				url: editor.getPermalink() || ''
+				url: editor.getPermalink() || '',
+				status: editor.getEditedPostAttribute( 'status' ) || ''
 			};
 		}, [] );
 		var generated = useMemo( function () {
@@ -136,7 +137,8 @@
 
 		var count = characterCount( text );
 		var tooLong = count > limit;
-		var disabled = ! text || tooLong;
+		var isPublished = post.status === 'publish';
+		var disabled = ! text || tooLong || ! isPublished;
 		var services = [
 			{ id: 'x', label: 'X', enabled: settings.x },
 			{ id: 'bluesky', label: 'Bluesky', enabled: settings.bluesky },
@@ -177,6 +179,9 @@
 			}, __( 'Reset to suggested text', 'crosspost-composer' ) ),
 			tooLong && el( Notice, { status: 'warning', isDismissible: false },
 				__( 'Shorten the text before opening a composer.', 'crosspost-composer' )
+			),
+			! isPublished && el( Notice, { status: 'info', isDismissible: false },
+				__( 'Publish the post to enable crossposting.', 'crosspost-composer' )
 			),
 			settings.mastodon && ! settings.mastodonInstance && el( Notice, { status: 'warning', isDismissible: false },
 				__( 'Add a Mastodon instance under Settings → Crosspost.', 'crosspost-composer' )
