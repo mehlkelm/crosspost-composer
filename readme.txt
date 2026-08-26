@@ -2,7 +2,7 @@
 Contributors: stefanpauwels
 Requires at least: 6.5
 Requires PHP: 7.4
-Stable tag: 0.1.4
+Stable tag: 0.1.5
 License: GPLv2 or later
 
 A shared, no-API composer for X, Bluesky, Threads, and Mastodon.

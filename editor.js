@@ -140,10 +140,10 @@
 		var isPublished = post.status === 'publish';
 		var disabled = ! text || tooLong || ! isPublished;
 		var services = [
-			{ id: 'x', label: 'X', enabled: settings.x },
+			{ id: 'mastodon', label: 'Mastodon', enabled: settings.mastodon },
 			{ id: 'bluesky', label: 'Bluesky', enabled: settings.bluesky },
 			{ id: 'threads', label: 'Threads', enabled: settings.threads },
-			{ id: 'mastodon', label: 'Mastodon', enabled: settings.mastodon }
+			{ id: 'x', label: 'X', enabled: settings.x }
 		].filter( function ( service ) {
 			return service.enabled;
 		} );
@@ -185,6 +185,9 @@
 			),
 			settings.mastodon && ! settings.mastodonInstance && el( Notice, { status: 'warning', isDismissible: false },
 				__( 'Add a Mastodon instance under Settings → Crosspost.', 'crosspost-composer' )
+			),
+			services.length > 0 && el( 'p', { className: 'crosspost-composer__button-label' },
+				__( 'Prefill post on:', 'crosspost-composer' )
 			),
 			el( 'div', { className: 'crosspost-composer__buttons' },
 				services.map( function ( service ) {
