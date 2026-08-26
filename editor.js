@@ -187,7 +187,7 @@
 				__( 'Add a Mastodon instance under Settings → Crosspost.', 'crosspost-composer' )
 			),
 			services.length > 0 && el( 'p', { className: 'crosspost-composer__button-label' },
-				__( 'Prefill post on:', 'crosspost-composer' )
+				__( 'Open composer for:', 'crosspost-composer' )
 			),
 			el( 'div', { className: 'crosspost-composer__buttons' },
 				services.map( function ( service ) {
