@@ -12,8 +12,8 @@
 	margin: -8px 0 12px;
 }
 
-.crosspost-composer__button-label {
-	margin: 12px 0 8px;
+.crosspost-composer .crosspost-composer__button-label {
+	margin: 16px 0 8px;
 }
 
 .crosspost-composer__buttons {
