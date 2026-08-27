@@ -144,7 +144,11 @@
 		var mediaUrl = webUrl( featuredMediaUrl ) || mediaUrlFromContent( content );
 
 		if ( mediaUrl ) {
-			return textWithUrl( postTitle || postContent, mediaUrl );
+			var mediaPost = [ postTitle || postContent, mediaUrl ].filter( Boolean ).join( '\n\n' );
+			if ( characterCount( mediaPost ) <= limit ) {
+				return mediaPost;
+			}
+			return textWithUrl( postTitle || postContent, url );
 		}
 
 		if ( ! containsMedia( content, featuredMedia ) && completePost && characterCount( completePost ) < limit ) {
