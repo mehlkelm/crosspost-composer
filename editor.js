@@ -81,10 +81,71 @@
 			/\[(gallery|video|audio|playlist)\b/i.test( content );
 	}
 
-	function initialText( content, title, url, featuredMedia ) {
+	function webUrl( value ) {
+		if ( ! value ) {
+			return '';
+		}
+		try {
+			var url = new URL( value, window.location.origin );
+			return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+		} catch ( error ) {
+			return '';
+		}
+	}
+
+	function mediaUrlFromContent( content ) {
+		var document = new DOMParser().parseFromString( content || '', 'text/html' );
+		var selectors = [
+			[ 'img[src]', 'src' ],
+			[ 'video[src]', 'src' ],
+			[ 'video source[src]', 'src' ],
+			[ 'audio[src]', 'src' ],
+			[ 'audio source[src]', 'src' ],
+			[ 'iframe[src]', 'src' ],
+			[ 'object[data]', 'data' ],
+			[ 'embed[src]', 'src' ],
+			[ '.wp-block-file a[href]', 'href' ]
+		];
+
+		for ( var i = 0; i < selectors.length; i++ ) {
+			var element = document.querySelector( selectors[i][0] );
+			var candidate = element ? webUrl( element.getAttribute( selectors[i][1] ) ) : '';
+			if ( candidate ) {
+				return candidate;
+			}
+		}
+
+		var blockPattern = /<!--\s+wp:(?:image|gallery|video|audio|cover|media-text|file|embed)\b(.*?)-->/gis;
+		var block;
+		while ( ( block = blockPattern.exec( content || '' ) ) ) {
+			var attributes = block[1].match( /\{.*\}/s );
+			if ( ! attributes ) {
+				continue;
+			}
+			try {
+				var data = JSON.parse( attributes[0] );
+				var attributeUrl = webUrl( data.url || data.href );
+				if ( attributeUrl ) {
+					return attributeUrl;
+				}
+			} catch ( error ) {
+				// Ignore malformed block attributes and use the post URL instead.
+			}
+		}
+
+		var embed = document.querySelector( '.wp-block-embed__wrapper' );
+		return embed ? webUrl( embed.textContent.trim() ) : '';
+	}
+
+	function initialText( content, title, url, featuredMedia, featuredMediaUrl ) {
 		var postTitle = plainText( title );
 		var postContent = plainText( content );
 		var completePost = [ postTitle, postContent ].filter( Boolean ).join( '\n\n' );
+		var mediaUrl = webUrl( featuredMediaUrl ) || mediaUrlFromContent( content );
+
+		if ( mediaUrl ) {
+			return textWithUrl( postTitle || postContent, mediaUrl );
+		}
 
 		if ( ! containsMedia( content, featuredMedia ) && completePost && characterCount( completePost ) < limit ) {
 			return completePost;
@@ -122,17 +183,20 @@
 	function Composer() {
 		var post = useSelect( function ( select ) {
 			var editor = select( 'core/editor' );
+			var featuredMedia = editor.getEditedPostAttribute( 'featured_media' ) || 0;
+			var media = featuredMedia ? select( 'core' ).getMedia( featuredMedia ) : null;
 			return {
 				content: editor.getEditedPostContent() || '',
 				title: editor.getEditedPostAttribute( 'title' ) || '',
 				url: editor.getPermalink() || '',
 				status: editor.getEditedPostAttribute( 'status' ) || '',
-				featuredMedia: editor.getEditedPostAttribute( 'featured_media' ) || 0
+				featuredMedia: featuredMedia,
+				featuredMediaUrl: media && media.source_url ? media.source_url : ''
 			};
 		}, [] );
 		var generated = useMemo( function () {
-			return initialText( post.content, post.title, post.url, post.featuredMedia );
-		}, [ post.content, post.title, post.url, post.featuredMedia ] );
+			return initialText( post.content, post.title, post.url, post.featuredMedia, post.featuredMediaUrl );
+		}, [ post.content, post.title, post.url, post.featuredMedia, post.featuredMediaUrl ] );
 		var state = useState( generated );
 		var text = state[0];
 		var setText = state[1];
