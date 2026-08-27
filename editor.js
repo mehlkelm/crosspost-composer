@@ -71,12 +71,22 @@
 		return value + separator + url;
 	}
 
-	function initialText( content, title, url ) {
+	function containsMedia( content, featuredMedia ) {
+		if ( Number( featuredMedia ) > 0 ) {
+			return true;
+		}
+
+		return /<(img|video|audio|iframe|object|embed)\b/i.test( content ) ||
+			/<!--\s+wp:(image|gallery|video|audio|cover|media-text|file|embed)\b/i.test( content ) ||
+			/\[(gallery|video|audio|playlist)\b/i.test( content );
+	}
+
+	function initialText( content, title, url, featuredMedia ) {
 		var postTitle = plainText( title );
 		var postContent = plainText( content );
 		var completePost = [ postTitle, postContent ].filter( Boolean ).join( '\n\n' );
 
-		if ( completePost && characterCount( completePost ) < limit ) {
+		if ( ! containsMedia( content, featuredMedia ) && completePost && characterCount( completePost ) < limit ) {
 			return completePost;
 		}
 
@@ -116,12 +126,13 @@
 				content: editor.getEditedPostContent() || '',
 				title: editor.getEditedPostAttribute( 'title' ) || '',
 				url: editor.getPermalink() || '',
-				status: editor.getEditedPostAttribute( 'status' ) || ''
+				status: editor.getEditedPostAttribute( 'status' ) || '',
+				featuredMedia: editor.getEditedPostAttribute( 'featured_media' ) || 0
 			};
 		}, [] );
 		var generated = useMemo( function () {
-			return initialText( post.content, post.title, post.url );
-		}, [ post.content, post.title, post.url ] );
+			return initialText( post.content, post.title, post.url, post.featuredMedia );
+		}, [ post.content, post.title, post.url, post.featuredMedia ] );
 		var state = useState( generated );
 		var text = state[0];
 		var setText = state[1];
