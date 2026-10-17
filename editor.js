@@ -291,9 +291,6 @@
 						onClick: function () { openComposer( service.id, text, post.url ); }
 					}, service.label );
 				} )
-			),
-			settings.settingsUrl && el( 'p', { className: 'crosspost-composer__settings-link' },
-				el( 'a', { href: settings.settingsUrl }, __( 'Crosspost settings', 'crosspost-composer' ) )
 			)
 		);
 	}
