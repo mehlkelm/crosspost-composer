@@ -34,3 +34,8 @@
 .crosspost-composer .components-notice__content {
 	margin: 0;
 }
+
+.crosspost-composer .crosspost-composer__settings-link {
+	margin: 16px 0 0;
+	font-size: 12px;
+}

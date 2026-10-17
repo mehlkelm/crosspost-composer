@@ -275,6 +275,9 @@
 			settings.mastodon && ! settings.mastodonInstance && el( Notice, { status: 'warning', isDismissible: false },
 				__( 'Add a Mastodon instance under Settings → Crosspost.', 'crosspost-composer' )
 			),
+			services.length === 0 && el( Notice, { status: 'info', isDismissible: false },
+				__( 'No services are enabled.', 'crosspost-composer' )
+			),
 			services.length > 0 && el( 'p', { className: 'crosspost-composer__button-label' },
 				__( 'Open composer for:', 'crosspost-composer' )
 			),
@@ -288,6 +291,9 @@
 						onClick: function () { openComposer( service.id, text, post.url ); }
 					}, service.label );
 				} )
+			),
+			settings.settingsUrl && el( 'p', { className: 'crosspost-composer__settings-link' },
+				el( 'a', { href: settings.settingsUrl }, __( 'Crosspost settings', 'crosspost-composer' ) )
 			)
 		);
 	}

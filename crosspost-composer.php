@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Crosspost Composer
  * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, and Facebook to the block editor.
- * Version: 0.3.1
+ * Version: 0.3.2
  * Author: Stefan Pauwels
  * License: GPL-2.0-or-later
  * Text Domain: crosspost-composer
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.3.1';
+const CROSSPOST_COMPOSER_VERSION                    = '0.3.2';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 
@@ -155,6 +155,32 @@ function crosspost_composer_admin_menu() {
 add_action( 'admin_menu', 'crosspost_composer_admin_menu' );
 
 /**
+ * URL of the settings page.
+ */
+function crosspost_composer_settings_url() {
+	return admin_url( 'options-general.php?page=crosspost-composer' );
+}
+
+/**
+ * Link to the settings from the Plugins list.
+ */
+function crosspost_composer_plugin_action_links( $links ) {
+	if ( current_user_can( 'manage_options' ) ) {
+		array_unshift(
+			$links,
+			sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( crosspost_composer_settings_url() ),
+				esc_html__( 'Settings', 'crosspost-composer' )
+			)
+		);
+	}
+
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'crosspost_composer_plugin_action_links' );
+
+/**
  * Render the settings page.
  */
 function crosspost_composer_settings_page() {
@@ -217,6 +243,7 @@ function crosspost_composer_enqueue_editor_assets() {
 				'linkedin'          => (bool) $settings['linkedin'],
 				'facebook'          => (bool) $settings['facebook'],
 				'mastodonInstance'  => $settings['mastodon_instance'],
+				'settingsUrl'       => current_user_can( 'manage_options' ) ? crosspost_composer_settings_url() : '',
 			)
 		) . ';',
 		'before'
