@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Crosspost Composer
- * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, Facebook, and Micro.blog to the block editor.
- * Version: 0.3.0
+ * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, and Facebook to the block editor.
+ * Version: 0.3.1
  * Author: Stefan Pauwels
  * License: GPL-2.0-or-later
  * Text Domain: crosspost-composer
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.3.0';
+const CROSSPOST_COMPOSER_VERSION                    = '0.3.1';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 
@@ -29,7 +29,6 @@ function crosspost_composer_get_settings() {
 			'mastodon'          => true,
 			'linkedin'          => true,
 			'facebook'          => true,
-			'microblog'         => true,
 			'mastodon_instance' => CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE,
 		)
 	);
@@ -68,7 +67,6 @@ function crosspost_composer_sanitize_settings( $input ) {
 		'mastodon'          => ! empty( $input['mastodon'] ),
 		'linkedin'          => ! empty( $input['linkedin'] ),
 		'facebook'          => ! empty( $input['facebook'] ),
-		'microblog'         => ! empty( $input['microblog'] ),
 		'mastodon_instance' => $instance,
 	);
 }
@@ -103,7 +101,6 @@ function crosspost_composer_admin_init() {
 		'x'         => __( 'X', 'crosspost-composer' ),
 		'linkedin'  => __( 'LinkedIn', 'crosspost-composer' ),
 		'facebook'  => __( 'Facebook', 'crosspost-composer' ),
-		'microblog' => __( 'Micro.blog', 'crosspost-composer' ),
 	);
 
 	foreach ( $labels as $service => $label ) {
@@ -219,7 +216,6 @@ function crosspost_composer_enqueue_editor_assets() {
 				'mastodon'          => (bool) $settings['mastodon'],
 				'linkedin'          => (bool) $settings['linkedin'],
 				'facebook'          => (bool) $settings['facebook'],
-				'microblog'         => (bool) $settings['microblog'],
 				'mastodonInstance'  => $settings['mastodon_instance'],
 			)
 		) . ';',

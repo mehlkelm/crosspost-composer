@@ -2,10 +2,10 @@
 Contributors: stefanpauwels
 Requires at least: 6.5
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 
-A shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, Facebook, and Micro.blog.
+A shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, and Facebook.
 
 == Description ==
 

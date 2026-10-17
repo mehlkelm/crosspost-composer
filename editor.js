@@ -180,8 +180,6 @@
 					return '';
 				}
 				return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent( postUrl ) + '&quote=' + encoded;
-			case 'microblog':
-				return 'https://micro.blog/post?text=' + encoded;
 			default:
 				return '';
 		}
@@ -234,8 +232,7 @@
 			{ id: 'threads', label: 'Threads', enabled: settings.threads },
 			{ id: 'x', label: 'X', enabled: settings.x },
 			{ id: 'linkedin', label: 'LinkedIn', enabled: settings.linkedin },
-			{ id: 'facebook', label: 'Facebook', enabled: settings.facebook },
-			{ id: 'microblog', label: 'Micro.blog', enabled: settings.microblog }
+			{ id: 'facebook', label: 'Facebook', enabled: settings.facebook }
 		].filter( function ( service ) {
 			return service.enabled;
 		} );
