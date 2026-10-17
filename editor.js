@@ -158,7 +158,7 @@
 		return textWithUrl( postTitle || postContent, url );
 	}
 
-	function intentUrl( service, text ) {
+	function intentUrl( service, text, postUrl ) {
 		var encoded = encodeURIComponent( text );
 		switch ( service ) {
 			case 'x':
@@ -172,13 +172,23 @@
 					return '';
 				}
 				return settings.mastodonInstance.replace( /\/$/, '' ) + '/share?text=' + encoded;
+			case 'linkedin':
+				return 'https://www.linkedin.com/feed/?shareActive=true&text=' + encoded;
+			case 'facebook':
+				// Facebook's sharer only prefills a link; the text travels as an optional quote.
+				if ( ! postUrl ) {
+					return '';
+				}
+				return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent( postUrl ) + '&quote=' + encoded;
+			case 'microblog':
+				return 'https://micro.blog/post?text=' + encoded;
 			default:
 				return '';
 		}
 	}
 
-	function openComposer( service, text ) {
-		var url = intentUrl( service, text );
+	function openComposer( service, text, postUrl ) {
+		var url = intentUrl( service, text, postUrl );
 		if ( url ) {
 			window.open( url, '_blank', 'noopener,noreferrer,width=720,height=720' );
 		}
@@ -222,7 +232,10 @@
 			{ id: 'mastodon', label: 'Mastodon', enabled: settings.mastodon },
 			{ id: 'bluesky', label: 'Bluesky', enabled: settings.bluesky },
 			{ id: 'threads', label: 'Threads', enabled: settings.threads },
-			{ id: 'x', label: 'X', enabled: settings.x }
+			{ id: 'x', label: 'X', enabled: settings.x },
+			{ id: 'linkedin', label: 'LinkedIn', enabled: settings.linkedin },
+			{ id: 'facebook', label: 'Facebook', enabled: settings.facebook },
+			{ id: 'microblog', label: 'Micro.blog', enabled: settings.microblog }
 		].filter( function ( service ) {
 			return service.enabled;
 		} );
@@ -275,7 +288,7 @@
 						key: service.id,
 						variant: 'secondary',
 						disabled: disabled || unavailable,
-						onClick: function () { openComposer( service.id, text ); }
+						onClick: function () { openComposer( service.id, text, post.url ); }
 					}, service.label );
 				} )
 			)

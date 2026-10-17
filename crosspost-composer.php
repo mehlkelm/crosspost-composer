@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Crosspost Composer
- * Description: Adds a shared, no-API composer for X, Bluesky, Threads, and Mastodon to the block editor.
- * Version: 0.2.1
+ * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, Facebook, and Micro.blog to the block editor.
+ * Version: 0.3.0
  * Author: Stefan Pauwels
  * License: GPL-2.0-or-later
  * Text Domain: crosspost-composer
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.2.1';
+const CROSSPOST_COMPOSER_VERSION                    = '0.3.0';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 
@@ -27,6 +27,9 @@ function crosspost_composer_get_settings() {
 			'bluesky'           => true,
 			'threads'           => true,
 			'mastodon'          => true,
+			'linkedin'          => true,
+			'facebook'          => true,
+			'microblog'         => true,
 			'mastodon_instance' => CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE,
 		)
 	);
@@ -63,6 +66,9 @@ function crosspost_composer_sanitize_settings( $input ) {
 		'bluesky'           => ! empty( $input['bluesky'] ),
 		'threads'           => ! empty( $input['threads'] ),
 		'mastodon'          => ! empty( $input['mastodon'] ),
+		'linkedin'          => ! empty( $input['linkedin'] ),
+		'facebook'          => ! empty( $input['facebook'] ),
+		'microblog'         => ! empty( $input['microblog'] ),
 		'mastodon_instance' => $instance,
 	);
 }
@@ -91,10 +97,13 @@ function crosspost_composer_admin_init() {
 	);
 
 	$labels = array(
-		'mastodon' => __( 'Mastodon', 'crosspost-composer' ),
-		'bluesky'  => __( 'Bluesky', 'crosspost-composer' ),
-		'threads'  => __( 'Threads', 'crosspost-composer' ),
-		'x'        => __( 'X', 'crosspost-composer' ),
+		'mastodon'  => __( 'Mastodon', 'crosspost-composer' ),
+		'bluesky'   => __( 'Bluesky', 'crosspost-composer' ),
+		'threads'   => __( 'Threads', 'crosspost-composer' ),
+		'x'         => __( 'X', 'crosspost-composer' ),
+		'linkedin'  => __( 'LinkedIn', 'crosspost-composer' ),
+		'facebook'  => __( 'Facebook', 'crosspost-composer' ),
+		'microblog' => __( 'Micro.blog', 'crosspost-composer' ),
 	);
 
 	foreach ( $labels as $service => $label ) {
@@ -208,6 +217,9 @@ function crosspost_composer_enqueue_editor_assets() {
 				'bluesky'           => (bool) $settings['bluesky'],
 				'threads'           => (bool) $settings['threads'],
 				'mastodon'          => (bool) $settings['mastodon'],
+				'linkedin'          => (bool) $settings['linkedin'],
+				'facebook'          => (bool) $settings['facebook'],
+				'microblog'         => (bool) $settings['microblog'],
 				'mastodonInstance'  => $settings['mastodon_instance'],
 			)
 		) . ';',
