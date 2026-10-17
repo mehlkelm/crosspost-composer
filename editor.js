@@ -10,7 +10,8 @@
 	var Button = wp.components.Button;
 	var TextareaControl = wp.components.TextareaControl;
 	var Notice = wp.components.Notice;
-	var PluginDocumentSettingPanel = wp.editPost.PluginDocumentSettingPanel;
+	// WordPress 6.6 moved the panel to wp.editor; keep the old location for 6.5.
+	var PluginDocumentSettingPanel = ( wp.editor && wp.editor.PluginDocumentSettingPanel ) || wp.editPost.PluginDocumentSettingPanel;
 	var settings = window.crosspostComposerSettings || {};
 	var limit = settings.limit || 280;
 
@@ -162,7 +163,7 @@
 		var encoded = encodeURIComponent( text );
 		switch ( service ) {
 			case 'x':
-				return 'https://twitter.com/intent/tweet?text=' + encoded;
+				return 'https://x.com/intent/post?text=' + encoded;
 			case 'bluesky':
 				return 'https://bsky.app/intent/compose?text=' + encoded;
 			case 'threads':

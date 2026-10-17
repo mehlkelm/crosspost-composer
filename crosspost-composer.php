@@ -1,10 +1,15 @@
 <?php
 /**
  * Plugin Name: Crosspost Composer
+ * Plugin URI: https://zoziapps.ch/projekte/crosspost-composer/
  * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, and Facebook to the block editor.
- * Version: 0.3.3
+ * Version: 0.4.0
+ * Requires at least: 6.5
+ * Requires PHP: 7.4
  * Author: Stefan Pauwels
+ * Author URI: https://stefan.pauwels.ch
  * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: crosspost-composer
  */
 
@@ -12,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.3.3';
+const CROSSPOST_COMPOSER_VERSION                    = '0.4.0';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 
@@ -114,7 +119,13 @@ function crosspost_composer_admin_init() {
 					esc_attr( CROSSPOST_COMPOSER_OPTION ),
 					esc_attr( $service ),
 					checked( ! empty( $settings[ $service ] ), true, false ),
-					esc_html( sprintf( __( 'Show the %s button', 'crosspost-composer' ), $label ) )
+					esc_html(
+						sprintf(
+							/* translators: %s: service name, for example Mastodon. */
+							__( 'Show the %s button', 'crosspost-composer' ),
+							$label
+						)
+					)
 				);
 			},
 			'crosspost-composer',
@@ -219,10 +230,11 @@ function crosspost_composer_enqueue_editor_assets() {
 	wp_enqueue_script(
 		'crosspost-composer-editor',
 		$base . 'editor.js',
-		array( 'wp-components', 'wp-compose', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins' ),
+		array( 'wp-components', 'wp-compose', 'wp-data', 'wp-edit-post', 'wp-editor', 'wp-element', 'wp-i18n', 'wp-plugins' ),
 		CROSSPOST_COMPOSER_VERSION,
 		true
 	);
+	wp_set_script_translations( 'crosspost-composer-editor', 'crosspost-composer' );
 	wp_enqueue_style(
 		'crosspost-composer-editor',
 		$base . 'editor.css',

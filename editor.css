@@ -8,8 +8,9 @@
 	font-weight: 600;
 }
 
-.crosspost-composer__reset {
-	margin: -8px 0 12px;
+.crosspost-composer .crosspost-composer__reset {
+	display: block;
+	margin: -4px 0 16px;
 }
 
 .crosspost-composer .crosspost-composer__button-label {
