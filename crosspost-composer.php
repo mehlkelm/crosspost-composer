@@ -3,7 +3,7 @@
  * Plugin Name: Crosspost Composer
  * Plugin URI: https://zoziapps.ch/projekte/crosspost-composer/
  * Description: Adds a shared, no-API composer for X, Bluesky, Threads, Mastodon, LinkedIn, and Facebook to the block editor.
- * Version: 0.4.0
+ * Version: 0.5.0
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Stefan Pauwels
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CROSSPOST_COMPOSER_VERSION                    = '0.4.0';
+const CROSSPOST_COMPOSER_VERSION                    = '0.5.0';
 const CROSSPOST_COMPOSER_OPTION                     = 'crosspost_composer_settings';
 const CROSSPOST_COMPOSER_DEFAULT_MASTODON_INSTANCE = 'https://mastodon.social';
 

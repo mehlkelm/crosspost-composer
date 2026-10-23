@@ -4,7 +4,7 @@ Tags: social, share, crosspost, mastodon, bluesky
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,8 +17,7 @@ Crosspost Composer adds a **Crosspost** panel to the post sidebar in the block e
 = How the suggested text is built =
 
 * When the title and plain-text content together fit within 280 characters, both are used and no URL is added.
-* For posts containing embedded or featured media, the public URL of the first media item is appended when the result fits. Otherwise the post permalink is used.
-* Longer text-only posts use the title, or the content when there is no title, followed by the permalink.
+* Longer posts, and posts containing embedded or featured media, use the title, or the content when there is no title, followed by the permalink.
 * The suggestion is capped at 280 characters and stays editable. A counter shows the length, and a reset link brings the suggestion back.
 
 = Services =
@@ -75,6 +74,9 @@ Facebook's share page does not accept prefilled text. The button passes the perm
 2. Settings > Crosspost, where services and the Mastodon instance are configured.
 
 == Changelog ==
+
+= 0.5.0 =
+* Always link to the post. Posts with media used to link to the first image or embed instead of the article.
 
 = 0.4.0 =
 * Add a Settings link on the Plugins screen.
